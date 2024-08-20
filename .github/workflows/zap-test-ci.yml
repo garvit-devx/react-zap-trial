@@ -35,18 +35,10 @@ jobs:
 
       - name: Run Active Scan on Specified URL
         run: |
-          docker exec zap zap-cli open-url https://www.zaproxy.org/
-          docker exec zap zap-cli active-scan https://www.zaproxy.org/
-          docker exec zap zap-cli report -o /zap/wrk/report.html -f html
+          docker exec zap zap-full-scan.py -t "https://www.zaproxy.org/" -r scan_report.html -m 2
 
       - name: Copy ZAP Report
         run: docker cp zap:/zap/wrk/report.html ./report.html
-
-      - name: Upload ZAP Report as Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: zap-report
-          path: report.html
 
       - name: Clean up ZAP container
         run: docker stop zap && docker rm zap
