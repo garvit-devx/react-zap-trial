@@ -1,0 +1,52 @@
+name: ZAP Full Scan
+
+on:
+  push:
+    branches:
+      - feat/integrate-zap
+
+jobs:
+  zap-scan:
+    name: OWASP ZAP Full Scan
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install OWASP ZAP Docker
+        run: |
+          docker pull owasp/zap2docker-stable
+
+      - name: Run OWASP ZAP Full Scan
+        run: |
+          docker run -u root -d --name zap -p 8080:8080 owasp/zap2docker-stable zap.sh -daemon -host 0.0.0.0 -port 8080
+
+      - name: Wait for ZAP to be ready
+        run: sleep 30 # Give ZAP enough time to start
+
+      - name: Run Active Scan on Specified URL
+        run: |
+          docker exec zap zap-cli open-url https://www.zaproxy.org/
+          docker exec zap zap-cli active-scan https://www.zaproxy.org/
+          docker exec zap zap-cli report -o /zap/wrk/report.html -f html
+
+      - name: Copy ZAP Report
+        run: docker cp zap:/zap/wrk/report.html ./report.html
+
+      - name: Upload ZAP Report as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: zap-report
+          path: report.html
+
+      - name: Clean up ZAP container
+        run: docker stop zap && docker rm zap
