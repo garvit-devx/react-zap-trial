@@ -1,0 +1,20 @@
+version: "3.4"
+
+services:
+  react-app:
+    container_name: react-app
+
+    image: react-template
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - "5173:5173"
+
+    volumes:
+      - .:/app # Enables the container to see the app code (reloading).
+      - /app/node_modules # An optimization technique to prevent node_modules from being rebuilt every time the container is run.
+
+    command: npm run dev -- --host
