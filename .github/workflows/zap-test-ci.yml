@@ -24,11 +24,11 @@ jobs:
 
       - name: Install OWASP ZAP Docker
         run: |
-          docker pull owasp/zap2docker-stable
+          docker pull zaproxy/zap-stable
 
       - name: Run OWASP ZAP Full Scan
         run: |
-          docker run -u root -d --name zap -p 8080:8080 owasp/zap2docker-stable zap.sh -daemon -host 0.0.0.0 -port 8080
+          docker run -u root -d --name zap -p 8080:8080 zaproxy/zap-stable zap.sh -daemon -host 0.0.0.0 -port 8080
 
       - name: Wait for ZAP to be ready
         run: sleep 30 # Give ZAP enough time to start
