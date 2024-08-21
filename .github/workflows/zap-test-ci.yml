@@ -35,7 +35,7 @@ jobs:
 
       - name: Run Active Scan on Specified URL
         run: |
-          docker run -v $(pwd):/zap/wrk/:rw -t zaproxy/zap-stable zap-full-scan.py -t "https://www.zaproxy.org/" -z "-config globalexcludeurl.url_list.url\(0\).regex='^http:\/\/example\.com'" -r report.html -m 2 -T 5
+          docker run -v $(pwd):/zap/wrk/:rw -t zaproxy/zap-stable zap-full-scan.py -t "https://www.example.com/" -r report.html
 
       - name: Copy ZAP Report
         run: docker cp zap:/zap/wrk/report.html ./report.html
