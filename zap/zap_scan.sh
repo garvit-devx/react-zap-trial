@@ -1,3 +1,6 @@
+# Remove any existing ZAP container
+docker rm -f zap
+
 # Start ZAP in daemon mode
 docker run -u root --name zap -p 8080:8080 -d zaproxy/zap-stable zap.sh -daemon -port 8080 -host 0.0.0.0
 
