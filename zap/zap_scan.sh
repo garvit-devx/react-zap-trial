@@ -1,5 +1,5 @@
 # Start ZAP in daemon mode
-docker run -u zap -p 8080:8080 -d zaproxy/zap-stable zap.sh -daemon -port 8080 -host 0.0.0.0
+docker run -u root --name zap -p 8080:8080 -d zaproxy/zap-stable zap.sh -daemon -port 8080 -host 0.0.0.0
 
 # Give ZAP time to start
 sleep 20
