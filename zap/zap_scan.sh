@@ -5,7 +5,7 @@ docker run -u root --name zap -p 8080:8080 -d zaproxy/zap-stable zap.sh -daemon 
 sleep 20
 
 # Run a ZAP scan against your deployed app on CloudFront
-docker run -u root --name zap -d -v $(pwd)/zap:/zap/wrk/:rw --network="host" zaproxy/zap-stable zap-full-scan.py --self-contained --start-options '-config api.disablekey=true' -r scan_report.html -t https://zaproxy.org/
+docker run -u root -d -v $(pwd)/zap:/zap/wrk/:rw --network="host" zaproxy/zap-stable zap-full-scan.py --self-contained --start-options '-config api.disablekey=true' -r scan_report.html -t https://zaproxy.org/
 
 # Copy the report
 # docker cp $(docker ps -q -f "ancestor=owasp/zap2docker-stable"):/zap/wrk/scan_report.html .
