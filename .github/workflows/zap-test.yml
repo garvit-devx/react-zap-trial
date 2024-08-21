@@ -1,0 +1,12 @@
+name: ZAP Scan
+on:
+  push:
+    branches:
+      - feat/integrate-zap-2
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run ZAP Scan
+        run: ./zap_scan.sh
