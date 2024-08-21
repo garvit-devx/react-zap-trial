@@ -1,6 +1,3 @@
-# Remove any existing ZAP container
-docker rm -f zap
-
 # Start ZAP in daemon mode
 docker run -u root --name zap -p 8080:8080 -d zaproxy/zap-stable zap.sh -daemon -port 8080 -host 0.0.0.0
 
@@ -14,6 +11,6 @@ docker run -u root --name zap -d -v $(pwd)/zap:/zap/wrk/:rw --network="host" zap
 # docker cp $(docker ps -q -f "ancestor=owasp/zap2docker-stable"):/zap/wrk/scan_report.html .
 
 # Optionally fail the build if the scan finds critical vulnerabilities
-docker run -u root --name zap -d -v $(pwd)/zap:/zap/wrk/:rw --network="host" zaproxy/zap-stable zap-full-scan.py --self-contained --start-options '-config api.disablekey=true' -r scan_report.html -t https://zaproxy.org/ --exit-code False
+# docker run -u root --name zap -d -v $(pwd)/zap:/zap/wrk/:rw --network="host" zaproxy/zap-stable zap-full-scan.py --self-contained --start-options '-config api.disablekey=true' -r scan_report.html -t https://zaproxy.org/ --exit-code False
 
 docker stop zap && docker rm zap
